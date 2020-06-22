@@ -38,29 +38,33 @@ class UploadForm extends Model
         ];
     }
     /**
-     * @return boolean process uploads
+     * @return array result parse
      */
     public function parseData($html)
-    {
-        $data = null;
+    {        
+        $result = []; // result
+        $result['info'] = '';
+        $result['data'] = [];
         $crawler = new Crawler($html);
         $crawler = $crawler->filter('tr');
 
-        $arrTr = [];
-        $crawler = $crawler->each(function ($tr, $i) use(&$arrTr) {
-            //\yii\helpers\VarDumper::dump($tr,7,true);
-            $arrTd = [];
+        $crawler->each(function ($tr, $i) use(&$result) {           
+            $arrTd = []; //array of cells
+        
             $tr->filter('td')->each(function ($td, $i) use (&$arrTd) {
-                $arrTd[] = $td->text(null);
-                //if($i == 2 and $td->text() == 'buy') {                }
+                $arrTd[$i] = $td->text(null);  // null if no node            
             });
-            $arrTr[] = $arrTd;
+           
+
+            // first row contain info of account
+            if($i === 0) {
+                $result['info'] = $arrTd; 
+            }
+            // these lines contain data
+            else if($i > 0 and $arrTd['2'] == 'buy')
+                $result['data'][] = $arrTd;
         });
 
-        /*foreach ($crawler as $td) {            
-            $data[] = $td;//->nodeName;
-        }*/
-
-        return $arrTr;
+        return $result;
     }
 }

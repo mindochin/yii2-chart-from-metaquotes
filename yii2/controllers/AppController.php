@@ -21,7 +21,6 @@ class AppController extends Controller
                     $data = $model->parseData($html);
                     //\yii\helpers\VarDumper::dump($data,7,true);
 
-
                     return $this->render('chart', ['data' => $data]);
                 }
             }
