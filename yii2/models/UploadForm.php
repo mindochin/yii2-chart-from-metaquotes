@@ -61,7 +61,7 @@ class UploadForm extends Model
                 $result['info'] = $arrTd; 
             }
             // these lines contain data
-            else if($i > 0 and $arrTd['2'] == 'buy')
+            else if($i > 0 and ($arrTd['2'] == 'buy' or $arrTd['2'] == 'balance'))
                 $result['data'][] = $arrTd;
         });
 
