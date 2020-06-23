@@ -15,7 +15,7 @@ class UploadForm extends Model
     public function rules()
     {
         return [
-            [['dataFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'html'],
+            [['dataFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'html', 'checkExtensionByMimeType' => false],
         ];
     }
 
@@ -45,6 +45,9 @@ class UploadForm extends Model
         $result = []; // result
         $result['info'] = ''; // info of account
         $result['data'] = []; // data of source
+        $result['chart_data'] = []; // data for chart
+        $result['chart_labels'] = []; // labels for chart
+        $result['success'] = false; // data obtained
 
         /**
          * result mining))
@@ -79,7 +82,7 @@ class UploadForm extends Model
             $chart_labels[] = $data['1'];
 
             if ($data['2'] == 'balance') {
-                $data['4'] = preg_replace("/[^x\d|*\.-]/","",$data['4']); // need only number
+                $data['4'] = preg_replace("/[^x\d|*\.-]/", "", $data['4']); // need only number
 
                 if ($first_balance === 0) {
                     $first_balance = $balance = $chart_data[] = floatval($data['4']);
@@ -90,9 +93,13 @@ class UploadForm extends Model
             }
         }
 
+        if (!empty($result['info']) && !empty($chart_data) && !empty($chart_labels)) { // yes, it`s ok
+            $result['success'] = true;
+            $result['chart_data'] = $chart_data;
+            $result['chart_labels'] = $chart_labels;
+        }
+
         $result['data'] = []; // clear
-        $result['chart_data'] = $chart_data;
-        $result['chart_labels'] = $chart_labels;
 
         return $result;
     }

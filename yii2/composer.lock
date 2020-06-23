@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "351d968f6a6cbcfc271ca5fc4af2e737",
+    "content-hash": "f4120d426ec64765ce6819cade8cb623",
     "packages": [
         {
             "name": "2amigos/yii2-chartjs-widget",
@@ -483,6 +483,50 @@
                 "yii2 chartjs"
             ],
             "time": "2017-04-29T03:43:19+00:00"
+        },
+        {
+            "name": "practically/yii2-chartjs",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Practically/yii2-chartjs.git",
+                "reference": "d4a8743d6821f10bfe7dc49149786c30c4c7f858"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Practically/yii2-chartjs/zipball/d4a8743d6821f10bfe7dc49149786c30c4c7f858",
+                "reference": "d4a8743d6821f10bfe7dc49149786c30c4c7f858",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "^2.0"
+            },
+            "require-dev": {
+                "bower-asset/chart-js": "^2.7",
+                "phpunit/phpunit": "^7",
+                "squizlabs/php_codesniffer": "^2.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "practically\\chartjs\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Ade Attwood",
+                    "email": "ade@practically.io",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Neil Davies",
+                    "email": "neil@practically.io",
+                    "role": "Contributor"
+                }
+            ],
+            "description": "Chart js wrapper for yii2 to help with rendering data charts",
+            "time": "2020-03-23T10:27:24+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

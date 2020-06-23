@@ -4,10 +4,13 @@ use yii\helpers\Html;
 use phpnt\chartJS\ChartJs;
 
 $this->title = 'График данных';
+
+$this->registerJsFile('https://cdn.jsdelivr.net/npm/hammerjs@2.0.8');
+$this->registerJsFile('https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7', ['depends' => [\phpnt\chartJS\ChartJSAsset::className()]]);
 ?>
 
 <h1><?= Html::encode($this->title) ?></h1>
-<? \yii\helpers\VarDumper::dump($data,7,true);?>
+<? //\yii\helpers\VarDumper::dump($data,7,true); // what's inside? ?>
 <table class="table">
   <tr>
     <?php foreach ($data['info'] as $info) : ?>
@@ -17,9 +20,24 @@ $this->title = 'График данных';
 </table>
 
 <div style="height: 400px; margin-bottom: 1em;">
-  <?= ChartJs::widget([
-    'type' => ChartJs::TYPE_LINE,
-    'options'   => ['maintainAspectRatio' => false],
+  <?= Chartjs::widget([
+    'type' => Chartjs::TYPE_LINE,
+    'options'   => [
+      'maintainAspectRatio' => false,
+      'plugins' => [
+        'zoom' => [
+          'pan' => [
+            'enabled' => true,
+            'mode' => 'x'
+          ],
+          'zoom' => [
+            'enabled' => true,           
+            'mode' => 'x',          
+            'sensitivity' => 0.5,
+          ]
+        ]
+      ]
+    ],
     'data' => [
       'labels' => $data['chart_labels'],
       'datasets' => [
