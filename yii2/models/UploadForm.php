@@ -41,29 +41,53 @@ class UploadForm extends Model
      * @return array result parse
      */
     public function parseData($html)
-    {        
+    {
         $result = []; // result
-        $result['info'] = '';
-        $result['data'] = [];
+        $result['info'] = ''; // info of account
+        $result['data'] = []; // data of source
+
+        /**
+         * result mining))
+         */
         $crawler = new Crawler($html);
         $crawler = $crawler->filter('tr');
 
-        $crawler->each(function ($tr, $i) use(&$result) {           
-            $arrTd = []; //array of cells
-        
-            $tr->filter('td')->each(function ($td, $i) use (&$arrTd) {
-                $arrTd[$i] = $td->text(null);  // null if no node            
+        $crawler->each(function ($tr, $i) use (&$result) {
+            $arr_td = []; //array of cells
+
+            $tr->filter('td')->each(function ($td, $i) use (&$arr_td) {
+                $arr_td[$i] = $td->text(null);  // null if no node            
             });
-           
 
             // first row contain info of account
-            if($i === 0) {
-                $result['info'] = $arrTd; 
+            if ($i === 0) {
+                $result['info'] = $arr_td;
             }
             // these lines contain data
-            else if($i > 0 and ($arrTd['2'] == 'buy' or $arrTd['2'] == 'balance'))
-                $result['data'][] = $arrTd;
+            else if ($i > 0 and ($arr_td['2'] == 'buy' or $arr_td['2'] == 'balance'))
+                $result['data'][] = $arr_td;
         });
+
+        /**
+         * processing result
+         */
+        $first_balance = 0; // start amount
+        $balance = 0; // current amount
+        $chart_data = []; // data for chart
+        $chart_labels = []; // labels for chart
+        foreach ($result['data'] as $data) {
+            if ($data['2'] == 'balance') {
+                if ($first_balance === 0) {
+                    $first_balance = $balance = floatval($data['4']);
+                }
+            } else {
+                $chart_data[] = $balance = round($balance + floatval($data['13']), 2);
+                $chart_labels[] = $data['1'];
+            }
+        }
+
+        $result['chart_data'] = $chart_data;
+        $result['chart_labels'] = $chart_labels;
 
         return $result;
     }
