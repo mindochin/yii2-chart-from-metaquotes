@@ -67,7 +67,7 @@ class UploadForm extends Model
                 $result['info'] = $arr_td;
             }
             // these lines contain data
-            else if ($i > 0 and ($arr_td['2'] == 'buy' or $arr_td['2'] == 'balance'))
+            else if ($i > 0 and array_key_exists('2', $arr_td) and ($arr_td['2'] == 'buy' or $arr_td['2'] == 'balance'))
                 $result['data'][] = $arr_td;
         });
 

@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use phpnt\chartJS\ChartJs;
 
 $this->title = 'График данных';
@@ -57,4 +58,4 @@ $this->registerJsFile('https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7', 
   ?>
 </div>
 
-<?= Html::a('Загрузить еще', '/', ['class' => 'btn btn-success', 'role' => 'button']) ?>
+<?= Html::a('Загрузить еще', Url::home(), ['class' => 'btn btn-success', 'role' => 'button']) ?>
