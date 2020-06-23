@@ -67,7 +67,7 @@ class UploadForm extends Model
                 $result['info'] = $arr_td;
             }
             // these lines contain data
-            else if ($i > 0 and array_key_exists('2', $arr_td) and ($arr_td['2'] == 'buy' or $arr_td['2'] == 'balance'))
+            else if ($i > 0 and array_key_exists('2', $arr_td) and ($arr_td['2'] == 'buy' or $arr_td['2'] == 'sell' or $arr_td['2'] == 'balance'))
                 $result['data'][] = $arr_td;
         });
 
@@ -79,17 +79,22 @@ class UploadForm extends Model
         $chart_data = []; // data for chart
         $chart_labels = []; // labels for chart
         foreach ($result['data'] as $data) {
+            $balance_row = 0; // balance of current iteration
+
             $chart_labels[] = $data['1'];
 
             if ($data['2'] == 'balance') {
-                $data['4'] = preg_replace("/[^x\d|*\.-]/", "", $data['4']); // need only number
-
-                if ($first_balance === 0) {
-                    $first_balance = $balance = $chart_data[] = floatval($data['4']);
-                } else
-                    $chart_data[] = $balance = round($balance + floatval($data['4']), 2);
+                $balance_row = $data['4'];
             } else {
-                $chart_data[] = $balance = round($balance + floatval($data['13']), 2);
+                $balance_row = $data['13'];
+            }
+
+            $balance_row = floatval(preg_replace("/[^x\d|*\.-]/", "", $balance_row)); // need only number
+
+            if ($first_balance === 0) {
+                $first_balance = $chart_data[] = $balance = $balance_row;
+            } else {
+                $chart_data[] = $balance = round(($balance + $balance_row), 2);
             }
         }
 
