@@ -76,16 +76,21 @@ class UploadForm extends Model
         $chart_data = []; // data for chart
         $chart_labels = []; // labels for chart
         foreach ($result['data'] as $data) {
+            $chart_labels[] = $data['1'];
+
             if ($data['2'] == 'balance') {
+                $data['4'] = preg_replace("/[^x\d|*\.-]/","",$data['4']); // need only number
+
                 if ($first_balance === 0) {
-                    $first_balance = $balance = floatval($data['4']);
-                }
+                    $first_balance = $balance = $chart_data[] = floatval($data['4']);
+                } else
+                    $chart_data[] = $balance = round($balance + floatval($data['4']), 2);
             } else {
                 $chart_data[] = $balance = round($balance + floatval($data['13']), 2);
-                $chart_labels[] = $data['1'];
             }
         }
 
+        $result['data'] = []; // clear
         $result['chart_data'] = $chart_data;
         $result['chart_labels'] = $chart_labels;
 

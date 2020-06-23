@@ -19,8 +19,7 @@ class AppController extends Controller
                 // file is uploaded successfully
                 if ($html = file_get_contents($model->dataFile->tempName)) {
                     $data = $model->parseData($html);
-                    //\yii\helpers\VarDumper::dump($data,7,true);
-
+                    
                     return $this->render('chart', ['data' => $data]);
                 }
             }
